@@ -5,6 +5,7 @@ function HomePage() {
     const [countries, setCountries] = useState([])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
+    const [search, setSearch] = useState('')
 
     useEffect(() => {
         loadCountries()
@@ -18,11 +19,28 @@ function HomePage() {
     function formatPopulation(value) {
         return new Intl.NumberFormat('pt-BR').format(value ?? 0)
     }
+    const filteredCountries = countries.filter((country) => {
+        const countryName = country.name?.common?.toLowerCase() || ''
+        return countryName.includes(search.toLowerCase())
+    })
 
 
     return (
         <main style={{ padding: '24px', fontFamily: 'Arial, sans-serif' }}>
             <h1>Wiki-Países</h1>
+            <div style={{ marginBottom: '16px' }}>
+                <input
+                    type="text"
+                    placeholder="Buscar país..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    style={{
+                        padding: '8px',
+                        border: '1px solid #ccc',
+                        borderRadius: '4px'
+                    }}
+                />
+            </div>
             {/* <ul>
           {countries.map((country) => (
             <li key={country.cca3}>
@@ -41,7 +59,7 @@ function HomePage() {
                         gap: '16px'
                     }}
                 >
-                    {countries.map((country) => (
+                    {filteredCountries.map((country) => (
                         <article
                             key={country.cca3}
                             style={{
@@ -57,12 +75,12 @@ function HomePage() {
                                 style={{
                                     width: '100%',
                                     height: '140px',
-                                    objectFit: 'cover'
+                                    objectFit: 'cover',
                                 }}
                             />
 
                             <div style={{ padding: '12px' }}>
-                                <h2 style={{ margin: '0 0 8px', fontSize: '18px' }}>
+                                <h2 style={{ margin: '0 0 8px', fontSize: '18px', color: '#333', fontWeight: 'bold' }}>
                                     {country.name?.common || 'Sem nome'}
                                 </h2>
 
