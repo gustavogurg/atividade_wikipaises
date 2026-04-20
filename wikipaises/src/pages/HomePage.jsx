@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getAllCountries } from '../services/countriesApi'
+import { Link } from 'react-router-dom'
 
 function HomePage() {
     const [countries, setCountries] = useState([])
@@ -98,43 +99,49 @@ function HomePage() {
                         <button onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))} disabled={currentPage === totalPages} style={{ padding: '8px 12px', cursor: currentPage === totalPages ? 'not-allowed' : 'pointer' }} > Próximo </button>
                     </div> */}
                     {paginatedCountries.map((country) => (
-                        <article
+                        <Link
                             key={country.cca3}
-                            style={{
-                                border: '1px solid #d9d9d9',
-                                borderRadius: '10px',
-                                overflow: 'hidden',
-                                background: '#fff'
-                            }}
+                            to={'/country/' + country.cca3}
+                            style={{ textDecoration: 'none', color: 'inherit' }}
                         >
-                            <img
-                                src={country.flags.png}
-                                alt={'Bandeira de ' + (country.name)}
+                            <article
+                                key={country.cca3}
                                 style={{
-                                    width: '100%',
-                                    height: '140px',
-                                    objectFit: 'cover',
+                                    border: '1px solid #d9d9d9',
+                                    borderRadius: '10px',
+                                    overflow: 'hidden',
+                                    background: '#fff'
                                 }}
-                            />
+                            >
+                                <img
+                                    src={country.flags.png}
+                                    alt={'Bandeira de ' + (country.name.common)}
+                                    style={{
+                                        width: '100%',
+                                        height: '140px',
+                                        objectFit: 'cover',
+                                    }}
+                                />
 
-                            <div style={{ padding: '12px' }}>
-                                <h2 style={{ margin: '0 0 8px', fontSize: '18px', color: '#333', fontWeight: 'bold' }}>
-                                    {country.name.common}
-                                </h2>
+                                <div style={{ padding: '12px' }}>
+                                    <h2 style={{ margin: '0 0 8px', fontSize: '18px', color: '#333', fontWeight: 'bold' }}>
+                                        {country.name.common}
+                                    </h2>
 
-                                <p style={{ margin: '0 0 6px' }}>
-                                    Capital: {country.capital}
-                                </p>
+                                    <p style={{ margin: '0 0 6px' }}>
+                                        Capital: {country.capital}
+                                    </p>
 
-                                <p style={{ margin: '0 0 6px' }}>
-                                    Regiao: {country.region}
-                                </p>
+                                    <p style={{ margin: '0 0 6px' }}>
+                                        Regiao: {country.region}
+                                    </p>
 
-                                <p style={{ margin: 0 }}>
-                                    Populacao: {formatPopulation(country.population)}
-                                </p>
-                            </div>
-                        </article>
+                                    <p style={{ margin: 0 }}>
+                                        Populacao: {formatPopulation(country.population)}
+                                    </p>
+                                </div>
+                            </article>
+                        </Link>
 
                     ))}
                 </section>
@@ -176,3 +183,4 @@ function HomePage() {
 }
 
 export default HomePage
+

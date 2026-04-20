@@ -21,3 +21,13 @@ export async function getCountriesByRegion(region) {
   const response = await api.get('/region/' + region)
   return response.data
 }
+
+export async function getCountryByCode(code) {
+  const response = await api.get('/alpha/' + code, {
+    params: {
+      fields: 'name,capital,region,subregion,area,population,languages,currencies,flags,cca3'
+    }
+  })
+
+  return Array.isArray(response.data) ? response.data[0] : response.data
+}
